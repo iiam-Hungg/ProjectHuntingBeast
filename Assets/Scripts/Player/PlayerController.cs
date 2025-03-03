@@ -2,14 +2,15 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Singleton<PlayerController>
 {
     public bool FacingLeft { get { return facingLeft; } }
-    public static PlayerController Instance;
+    //public static PlayerController Instance;
     [SerializeField]
     private float moveSpeed = 1f;
     [SerializeField] private float dashSpeed = 4f;
     [SerializeField] private TrailRenderer myTrailRenderer;
+    [SerializeField] private Transform weaponCollider;
 
     private PlayerControls playerControls;
     private Vector2 movement;
@@ -24,9 +25,10 @@ public class PlayerController : MonoBehaviour
     private bool facingLeft = false;
     private bool isDashing = false;
 
-    private void Awake()
+    protected override void Awake()
     {
-        Instance = this;
+        base.Awake();
+      
         playerControls = new PlayerControls();
         rb = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
@@ -38,11 +40,17 @@ public class PlayerController : MonoBehaviour
     {
         playerControls.Combat.Dash.performed += _ => Dash();
         startingMoveSpeed = moveSpeed;
+        ActiveInventory.Instance.EquipStartingWeapon();
     }
+
 
     private void OnEnable()
     {
         playerControls.Enable();
+    }
+    private void OnDisable()
+    {
+        playerControls.Disable();
     }
 
     private void Update()
@@ -59,6 +67,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public Transform GetWeaponCollider()
+    {
+        return weaponCollider;
+    }
+
     private void PlayerInput()
     {
         movement = playerControls.Movement.Move.ReadValue<Vector2>(); 
@@ -69,7 +82,7 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        if (knockback.GettingKnockedBack) { return; } 
+        if (knockback.GettingKnockedBack || PlayerHealth.Instance.isDead) { return; } 
         rb.MovePosition(rb.position +  movement * (moveSpeed * Time.fixedDeltaTime));
     }
 
