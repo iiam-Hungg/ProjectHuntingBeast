@@ -6,8 +6,7 @@ public class PlayerController : Singleton<PlayerController>
 {
     public bool FacingLeft { get { return facingLeft; } }
     //public static PlayerController Instance;
-    [SerializeField]
-    private float moveSpeed = 1f;
+    [SerializeField] private float moveSpeed = 1f;
     [SerializeField] private float dashSpeed = 4f;
     [SerializeField] private TrailRenderer myTrailRenderer;
     [SerializeField] private Transform weaponCollider;

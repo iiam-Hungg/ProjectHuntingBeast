@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ActiveInventory : Singleton<ActiveInventory>
 {
@@ -34,9 +34,9 @@ public class ActiveInventory : Singleton<ActiveInventory>
 
     private void ToggleActiveHightlight(int indexNum)
     {
-        activeSlotIndexNum = indexNum;
+        activeSlotIndexNum = indexNum; 
 
-        foreach (Transform inventorySlot in this.transform)
+        foreach (Transform inventorySlot in this.transform) 
         {
             inventorySlot.GetChild(0).gameObject.SetActive(false);
         }
@@ -53,7 +53,7 @@ public class ActiveInventory : Singleton<ActiveInventory>
         }
 
         Transform childTransform = transform.GetChild(activeSlotIndexNum);
-        InventorySlot inventorySlot = childTransform.GetComponentInChildren<InventorySlot>();
+        InventorySlot inventorySlot = childTransform.GetComponentInChildren<InventorySlot>(); 
         Weaponinfo weaponinfo = inventorySlot.GetWeaponinfo();
         GameObject weaponToSpawn = weaponinfo.weaponPrefab;
 

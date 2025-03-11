@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6778737146729649119}
   - component: {fileID: 5738934977032806261}
   - component: {fileID: 6535771314067838915}
-  - component: {fileID: 5391289188876650324}
+  - component: {fileID: -7598525897873446116}
   - component: {fileID: 1345985623046874423}
   m_Layer: 0
   m_Name: Arrow
@@ -154,7 +154,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 0
 --- !u!96 &6535771314067838915
 TrailRenderer:
@@ -272,7 +272,7 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
---- !u!210 &5391289188876650324
+--- !u!210 &-7598525897873446116
 SortingGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

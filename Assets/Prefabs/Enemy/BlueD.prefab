@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 4893254357841713376}
   - component: {fileID: 1978994156641112495}
   - component: {fileID: -2595017456254277105}
+  - component: {fileID: 1311865190711392419}
   m_Layer: 0
   m_Name: BlueD
   m_TagString: Untagged
@@ -173,6 +174,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roamChangeDirFloat: 2
+  attackRange: 5
+  enemyType: {fileID: 1311865190711392419}
+  attackCooldown: 2
+  stopMovingWhileAttacking: 1
 --- !u!114 &1305735545321148259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264,3 +269,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goldCoin: {fileID: 3443279344173301720, guid: 77d28d9b244992244a9b940b93cc854a, type: 3}
   healthGlobe: {fileID: 3443279344173301720, guid: b5dc2543e4ea4904dbb1cbea6ce7e1f5, type: 3}
+--- !u!114 &1311865190711392419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4007164524407022935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: defdb19ebc0569549b7c19a1072b6686, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 8870339695321905686, guid: 551f154523b816549a1459b83c022d09, type: 3}
+  bulletMoveSpeed: 4
+  burstCount: 2
+  projectilesPerBurst: 1
+  angleSpread: 0
+  startingDistance: 0.1
+  timeBetweenBursts: 0.1
+  restTime: 1
+  stagger: 1
+  oscillate: 1
