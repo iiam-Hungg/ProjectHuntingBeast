@@ -1,2 +1,15 @@
 fileFormatVersion: 2
 guid: e7372a469af6fa449b571864bb8e9816
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - slashAnimPrefab: {instanceID: 0}
+  - slashAnimSpawnPoint: {instanceID: 0}
+  - weaponInfo: {instanceID: 0}
+  - swordSound: {fileID: 8300000, guid: 5341cf97ed24b3f409956a4a8dedc137, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

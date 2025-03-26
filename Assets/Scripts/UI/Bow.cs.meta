@@ -1,2 +1,15 @@
 fileFormatVersion: 2
 guid: 4d2583a6194e4154d90b17386c7e9344
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - weaponinfo: {instanceID: 0}
+  - arrowPrefab: {instanceID: 0}
+  - arrowSpawnPoint: {instanceID: 0}
+  - arrowSound: {fileID: 8300000, guid: 9138f5188707fd24890884bb7277b3a3, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

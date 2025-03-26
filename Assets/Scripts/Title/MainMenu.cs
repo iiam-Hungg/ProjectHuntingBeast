@@ -5,7 +5,16 @@ public class MainMenu : MonoBehaviour
 {
     public void StartGame()
     {
-        Time.timeScale = 1f;
+        Debug.Log("Loading Scene: Scene1");
+        Time.timeScale = 1;
+        if (PlayerHealth.Instance != null)
+        {
+            Destroy(PlayerHealth.Instance.gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("PlayerHealth instance is already null or does not exist in this scene.");
+        }
         SceneManager.LoadScene("Scene1");
     }
 

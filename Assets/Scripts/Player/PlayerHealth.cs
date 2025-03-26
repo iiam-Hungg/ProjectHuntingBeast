@@ -11,6 +11,9 @@ public class PlayerHealth : Singleton<PlayerHealth>
     [SerializeField] private int maxHealth = 3;
     [SerializeField] private float knockBackThrustAmount = 10f;
     [SerializeField] private float damageRecoveryTime = 1f;
+    [SerializeField] private CanvasGroup gameOverScreen;
+    [SerializeField] private AudioSource gameOverAudioSource;  
+    [SerializeField] private AudioClip gameOverMusic;
 
     private Slider healthSlider;
     private int currentHealth;
@@ -19,10 +22,10 @@ public class PlayerHealth : Singleton<PlayerHealth>
     private Flash flash;
 
     const string HEALTH_SLIDER_TEXT = "Health Slider";
-    const string TOWN_TEXT = "Scene1";
     readonly int DEATH_HASH = Animator.StringToHash("Death");
 
-    protected override void Awake() {
+    protected override void Awake()
+    {
         base.Awake();
         flash = GetComponent<Flash>();
         knockback = GetComponent<Knockback>();
@@ -33,6 +36,13 @@ public class PlayerHealth : Singleton<PlayerHealth>
         isDead = false;
         currentHealth = maxHealth;
         UpdateHealthSlider();
+
+        gameOverScreen.alpha = 0;
+        gameOverScreen.gameObject.SetActive(false);
+
+        Time.timeScale = 1;
+
+        GetComponent<Animator>().Play("Idle");
     }
 
     private void OnCollisionStay2D(Collision2D other)
@@ -45,18 +55,9 @@ public class PlayerHealth : Singleton<PlayerHealth>
         }
     }
 
-    public void HealPlayer()
-    {
-        if(currentHealth < maxHealth)
-        {
-            currentHealth += 1;
-            UpdateHealthSlider();
-        }
-    }
-
     public void TakeDamage(int damageAmount, Transform hitTransform)
     {
-        if(!canTakeDamage) { return; }
+        if (!canTakeDamage) { return; }
 
         ScreenShakeManager.Instance.ShakeScreen();
         knockback.GetKnockedBack(hitTransform, knockBackThrustAmount);
@@ -70,21 +71,60 @@ public class PlayerHealth : Singleton<PlayerHealth>
 
     private void CheckIfPlayerDeath()
     {
-        if(currentHealth <= 0 && !isDead)
+        if (currentHealth <= 0 && !isDead)
         {
-            isDead=true;
+            isDead = true;
             Destroy(ActiveWeapon.Instance.gameObject);
             currentHealth = 0;
             GetComponent<Animator>().SetTrigger(DEATH_HASH);
-            StartCoroutine(DeathLoadSceneRoutine());
+
+            PlayGameOverMusic(); 
+
+            StartCoroutine(DeathSequence());
         }
     }
 
-    private IEnumerator DeathLoadSceneRoutine()
+    private void PlayGameOverMusic()
     {
-        yield return new WaitForSeconds(2f);
-        Destroy(gameObject);
-        SceneManager.LoadScene(TOWN_TEXT);
+        BackgroundMusicController bgm = Object.FindAnyObjectByType<BackgroundMusicController>();
+        if (bgm != null && bgm.audioSource.isPlaying)
+        {
+            bgm.audioSource.Stop();
+        }
+
+        if (gameOverAudioSource != null && gameOverMusic != null)
+        {
+            gameOverAudioSource.clip = gameOverMusic;
+            gameOverAudioSource.loop = false;
+            gameOverAudioSource.Play();
+        }
+    }
+
+    private IEnumerator DeathSequence()
+    {
+        yield return new WaitForSeconds(1.5f);
+        StartCoroutine(FadeToGameOver());
+
+        yield return new WaitForSeconds(10f);
+        PlayGameOverMusic();
+    }
+
+    private IEnumerator FadeToGameOver()
+    {
+        gameOverScreen.gameObject.SetActive(true);
+
+        float fadeDuration = 2f;
+        float elapsedTime = 0;
+
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            gameOverScreen.alpha = Mathf.Lerp(0, 1, elapsedTime / fadeDuration);
+            yield return null;
+        }
+
+        gameOverScreen.alpha = 1;
+        Time.timeScale = 0;
     }
 
     private IEnumerator DamageRecoveryRoutine()
@@ -95,7 +135,7 @@ public class PlayerHealth : Singleton<PlayerHealth>
 
     private void UpdateHealthSlider()
     {
-        if(healthSlider == null)
+        if (healthSlider == null)
         {
             healthSlider = GameObject.Find(HEALTH_SLIDER_TEXT).GetComponent<Slider>();
         }
@@ -107,9 +147,21 @@ public class PlayerHealth : Singleton<PlayerHealth>
     public void ChangeHealth(int amount)
     {
         currentHealth += amount;
-        if(currentHealth <= 0)
+        UpdateHealthSlider();
+
+        if (currentHealth <= 0)
         {
-            gameObject.SetActive(false);
+            CheckIfPlayerDeath();
+        }
+    }
+
+    public void HealPlayer()
+    {
+        if (currentHealth < maxHealth)
+        {
+            currentHealth += 1;
+            UpdateHealthSlider();
         }
     }
 }
+
